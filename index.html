@@ -1,11 +1,687 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Progate</title>
-  </head>
-  <body>
-    <h1 class="title">HTML & CSS の開発環境を用意しよう！</h1>
-    <p>自分のPCでWebページを開発する方法を学習しましょう</p>
-  </body>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FF6B9D">
+    <meta name="description" content="ペットの性格を診断して、AIペットツインと出会う">
+    <title>PetAxis - ペットと繋がる、ペットを知る</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.svg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B9D;
+            --primary-dark: #E5568A;
+            --secondary: #4ECDC4;
+            --background: #FFF9FB;
+            --card-bg: #FFFFFF;
+            --text-primary: #2D3436;
+            --text-secondary: #636E72;
+            --border: #DFE6E9;
+            --shadow: rgba(255, 107, 157, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        .welcome-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 4px 20px var(--shadow);
+            text-align: center;
+        }
+
+        .welcome-section h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .welcome-section p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .pet-icon {
+            font-size: 80px;
+            margin: 20px 0;
+        }
+
+        .button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--shadow);
+            width: 100%;
+            max-width: 300px;
+            margin: 10px auto;
+            display: block;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .button-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .feature-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .feature-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-secondary);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .pet-type-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .pet-type-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pet-type-card:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .pet-type-card.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1) 0%, rgba(78, 205, 196, 0.1) 100%);
+        }
+
+        .pet-type-icon {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .diagnosis-question {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 15px 0;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .diagnosis-question h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            background: var(--background);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.15) 0%, rgba(78, 205, 196, 0.15) 100%);
+        }
+
+        .progress-bar {
+            background: var(--border);
+            border-radius: 10px;
+            height: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .result-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .personality-trait {
+            background: var(--background);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .trait-name {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .trait-bar {
+            background: var(--border);
+            border-radius: 5px;
+            height: 10px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .trait-fill {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .journal-entry {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .journal-date {
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .journal-content {
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+
+        .chat-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 400px;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .chat-message {
+            margin: 15px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-message.pet {
+            flex-direction: row;
+        }
+
+        .chat-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-bubble {
+            background: var(--background);
+            padding: 12px 16px;
+            border-radius: 15px;
+            max-width: 70%;
+        }
+
+        .chat-message.pet .message-bubble {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1) 0%, rgba(78, 205, 196, 0.1) 100%);
+        }
+
+        .chat-message.user .message-bubble {
+            background: var(--primary);
+            color: white;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: 2px solid var(--border);
+            border-radius: 25px;
+            padding: 12px 20px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary);
+        }
+
+        .send-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="welcomeScreen" class="screen active">
+        <header>
+            <h1>🐾 PetAxis</h1>
+            <p>診断で繋がる、ペットを知る</p>
+        </header>
+
+        <div class="container">
+            <div class="welcome-section">
+                <div class="pet-icon">🐕🐈</div>
+                <h2>ようこそ！</h2>
+                <p>PetAxisは、あなたのペットの性格を診断し、AIペットツインと出会えるアプリです。</p>
+                <button class="button" onclick="app.showPetTypeSelection()">はじめる</button>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">性格診断</div>
+                    <div class="feature-desc">ペットの個性を深く理解</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <div class="feature-title">日記機能</div>
+                    <div class="feature-desc">日々の記録を残す</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <div class="feature-title">AIツイン</div>
+                    <div class="feature-desc">ペット視点で会話</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-title">分析レポート</div>
+                    <div class="feature-desc">成長を可視化</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="petTypeScreen" class="screen">
+        <header>
+            <h1>🐾 ペットタイプ選択</h1>
+            <p>あなたのペットは？</p>
+        </header>
+
+        <div class="container">
+            <div class="pet-type-selector">
+                <div class="pet-type-card" onclick="app.selectPetType('dog')">
+                    <div class="pet-type-icon">🐕</div>
+                    <h3>犬</h3>
+                </div>
+                <div class="pet-type-card" onclick="app.selectPetType('cat')">
+                    <div class="pet-type-icon">🐈</div>
+                    <h3>猫</h3>
+                </div>
+            </div>
+            <button class="button" id="continueButton" style="display:none;" onclick="app.startDiagnosis()">診断を始める</button>
+        </div>
+    </div>
+
+    <div id="diagnosisScreen" class="screen">
+        <header>
+            <h1>🐾 性格診断</h1>
+            <p>ペットについて教えてください</p>
+        </header>
+
+        <div class="container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+            <div id="questionsContainer"></div>
+            <button class="button" id="submitDiagnosis" style="display:none;" onclick="app.submitDiagnosis()">診断結果を見る</button>
+        </div>
+    </div>
+
+    <div id="resultScreen" class="screen">
+        <header>
+            <h1>🐾 診断結果</h1>
+            <p>あなたのペットの性格</p>
+        </header>
+
+        <div class="container">
+            <div class="result-card">
+                <div class="pet-icon" id="resultIcon">🐕</div>
+                <h2 id="personalityType">分析中...</h2>
+                <p id="personalityDescription"></p>
+            </div>
+
+            <div class="result-card">
+                <h3>性格特性</h3>
+                <div id="personalityTraits"></div>
+            </div>
+
+            <button class="button" onclick="app.showHome()">ホームへ</button>
+        </div>
+    </div>
+
+    <div id="homeScreen" class="screen">
+        <header>
+            <h1>🐾 ホーム</h1>
+            <p id="petNameHeader">マイペット</p>
+        </header>
+
+        <div class="container">
+            <div class="welcome-section">
+                <div class="pet-icon" id="homeIcon">🐕</div>
+                <h2 id="homePetName">ポチ</h2>
+                <p id="homePersonalityType">元気いっぱいタイプ</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card" onclick="app.showScreen('journalScreen')">
+                    <div class="feature-icon">📝</div>
+                    <div class="feature-title">日記</div>
+                </div>
+                <div class="feature-card" onclick="app.showScreen('chatScreen')">
+                    <div class="feature-icon">💬</div>
+                    <div class="feature-title">AIチャット</div>
+                </div>
+                <div class="feature-card" onclick="app.showScreen('statsScreen')">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">統計</div>
+                </div>
+                <div class="feature-card" onclick="app.showScreen('settingsScreen')">
+                    <div class="feature-icon">⚙️</div>
+                    <div class="feature-title">設定</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="journalScreen" class="screen">
+        <header>
+            <h1>📝 ペット日記</h1>
+            <p>日々の記録</p>
+        </header>
+
+        <div class="container">
+            <div class="result-card">
+                <h3>新しい記録を追加</h3>
+                <textarea id="journalInput" style="width: 100%; min-height: 100px; border: 2px solid var(--border); border-radius: 10px; padding: 15px; font-family: inherit; font-size: 14px; margin: 15px 0;" placeholder="今日のペットの様子を記録しましょう...&#10;&#10;例：&#10;- 朝の散歩で元気に走り回った&#10;- お昼寝を3時間&#10;- おやつを美味しそうに食べた"></textarea>
+                <button class="button" onclick="app.addJournalEntry()">記録する</button>
+            </div>
+
+            <div id="journalEntries"></div>
+        </div>
+    </div>
+
+    <div id="chatScreen" class="screen">
+        <header>
+            <h1>💬 AIペットチャット</h1>
+            <p>ペット視点で会話</p>
+        </header>
+
+        <div class="container">
+            <div class="chat-container">
+                <div id="chatMessages"></div>
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="メッセージを入力..." onkeypress="if(event.key==='Enter') app.sendMessage()">
+                    <button class="send-button" onclick="app.sendMessage()">➤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="statsScreen" class="screen">
+        <header>
+            <h1>📊 統計情報</h1>
+            <p>成長の記録</p>
+        </header>
+
+        <div class="container">
+            <div class="result-card">
+                <h3>アクティビティ</h3>
+                <div id="statsContent">
+                    <div class="personality-trait">
+                        <div class="trait-name">日記の記録数</div>
+                        <div style="font-size: 32px; color: var(--primary); margin: 10px 0;" id="journalCount">0</div>
+                    </div>
+                    <div class="personality-trait">
+                        <div class="trait-name">AIとの会話数</div>
+                        <div style="font-size: 32px; color: var(--secondary); margin: 10px 0;" id="chatCount">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsScreen" class="screen">
+        <header>
+            <h1>⚙️ 設定</h1>
+            <p>アプリの設定</p>
+        </header>
+
+        <div class="container">
+            <div class="result-card">
+                <h3>ペット情報</h3>
+                <div style="margin: 20px 0;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">ペットの名前</label>
+                    <input type="text" id="petNameInput" style="width: 100%; border: 2px solid var(--border); border-radius: 10px; padding: 12px; font-size: 14px;" placeholder="ペットの名前">
+                </div>
+                <button class="button" onclick="app.savePetName()">保存</button>
+            </div>
+
+            <div class="result-card">
+                <h3>データ管理</h3>
+                <button class="button button-secondary" onclick="app.resetDiagnosis()">診断をやり直す</button>
+                <button class="button button-secondary" onclick="app.clearAllData()" style="margin-top: 10px;">すべてのデータを削除</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a class="nav-item" onclick="app.showScreen('homeScreen')">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">ホーム</span>
+        </a>
+        <a class="nav-item" onclick="app.showScreen('journalScreen')">
+            <span class="nav-icon">📝</span>
+            <span class="nav-label">日記</span>
+        </a>
+        <a class="nav-item" onclick="app.showScreen('chatScreen')">
+            <span class="nav-icon">💬</span>
+            <span class="nav-label">チャット</span>
+        </a>
+        <a class="nav-item" onclick="app.showScreen('statsScreen')">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">統計</span>
+        </a>
+    </nav>
+
+    <script src="app.js"></script>
+</body>
 </html>

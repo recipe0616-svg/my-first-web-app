@@ -1,0 +1,27 @@
+{
+  "name": "PetAxis - ペットと繋がる、ペットを知る",
+  "short_name": "PetAxis",
+  "description": "ペットの性格を診断して、AIペットツインと出会う",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF9FB",
+  "theme_color": "#FF6B9D",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "entertainment"],
+  "screenshots": [],
+  "lang": "ja"
+}
